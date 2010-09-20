@@ -1,0 +1,4 @@
+*usage of trans.py(html format translator for kindle)
+  python trans.py (htmlfile) > translated.html
+  mail to (username)@free.kindle.com, with attachment 'translated.html'
+    -> then you can see the translated document in your Kindle!
