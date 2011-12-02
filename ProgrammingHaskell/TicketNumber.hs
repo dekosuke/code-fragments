@@ -1,3 +1,5 @@
+--"Programming Haskell" by G.Hutton, Chap 11
+
 data Op = Add | Sub | Mul | Div deriving (Show,Eq)
 
 valid :: Op -> Int -> Int -> Bool
