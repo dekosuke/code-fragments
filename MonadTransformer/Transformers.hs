@@ -1,6 +1,5 @@
 module Transformers where
 
---For practice,
 --Examples in "Monad Transformers Step by Step"
 --http://www.grabmueller.de/martin/www/pub/Transformers.pdf
 
@@ -86,7 +85,7 @@ eval2 env (App e1 e2) = do
 --2.3 Hiding the Environment
 type Eval3 a = ReaderT Env (ErrorT String Identity) a
 runEval3 :: Env -> Eval3 a -> Either String a
-runEval3 env ev = runIdentity (runErrorT (runReaderT ev env))
+runEval3 env ev = runIdentity (runErrorT (runReaderT ev env))
 eval3 :: Exp -> Eval3 Value
 eval3 (Lit i) = return $ IntVal i
 eval3 (Var n) = do
