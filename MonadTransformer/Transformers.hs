@@ -28,6 +28,7 @@ data Value = IntVal Integer       --integer
 
 type Env = Map.Map Name Value  --key-value correspondence
 
+--Straightforward Imprementation
 eval0 :: Env -> Exp -> Value
 eval0 env (Lit i) = IntVal i
 eval0 env (Var n) =fromJust (Map.lookup n env)
@@ -60,6 +61,7 @@ eval1 env (App e1 e2) = do
   case val1 of 
     FunVal env' n body -> eval1 (Map.insert n val2 env') body
 
+--2.2 Adding Error Handling
 type Eval2 a = ErrorT String Identity a
 
 runEval2 :: Eval2 a -> Either String a
@@ -81,6 +83,7 @@ eval2 env (App e1 e2) = do
   val2 <- eval2 env e2
   eval2 (Map.insert n val2 env') body
 
+--2.3 Hiding the Environment
 type Eval3 a = ReaderT Env (ErrorT String Identity) a
 runEval3 :: Env -> Eval3 a -> Either String a
 runEval3 env ev = runIdentity (runErrorT (runReaderT ev env))
@@ -109,6 +112,10 @@ eval3 (App e1 e2) = do
       local (const (Map.insert n val2 env'))
         (eval3 body)
     _ -> throwError "type error in application"
+
+--2.4 Adding State
+type Eval4 a = ReaderT Env (ErrorT String (StateT Integer Identity)) a
+
 
 exampleExp = Lit 12 `Plus` (App (Abs "x" (Var "x")) (Lit 4 `Plus` Lit 2))
 typeErrorExp = Plus (Lit 1) (Abs "x" (Var "x"))
